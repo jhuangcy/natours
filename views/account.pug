@@ -1,0 +1,62 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+    li(class=`${active ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg: use(xlink:href=`img/icons.svg#icon-${icon}`)
+            | #{text}
+
+block content 
+    main.main
+        .user-view
+            nav.user-view__menu
+                ul.side-nav
+                    +navItem('#', 'Settings', 'settings', true)
+                    +navItem('/my-tours', 'My bookings', 'briefcase')
+                    +navItem('#', 'My reviews', 'star')
+                    +navItem('#', 'Billing', 'credit-card')
+
+                - if (user.role === 'admin')
+                    .admin-nav
+                        h5.admin-nav__heading Admin
+                        ul.side-nav
+                            +navItem('#', 'Manage tours', 'map')
+                            +navItem('#', 'Manage users', 'users')
+                            +navItem('#', 'Manage reviews', 'star')
+                            +navItem('#', 'Manage bookings', 'briefcase')
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Your account settings
+
+                    //- Submit form without going through our own api (enctype is req for file uploads)
+                    //- form(action='/submit-user-data' method='post' enctype="multipart/form-data").form.form-user-data
+                    form.form.form-user-data
+                        .form__group
+                            label(for='name').form__label Name
+                            input(type='text', name='name' value=`${user.name}`, required)#name.form__input
+                        .form__group.ma-bt-md
+                            label(for='email').form__label Email address
+                            input(type='email', name='email' value=`${user.email}`, required)#email.form__input
+                        .form__group.form__photo-upload
+                            img(src=`img/users/${user.photo}`, alt='User photo').form__user-photo
+                            input#photo(type="file", name="photo", accept="/image/*").form__upload 
+                            label(for="photo") Choose new photo
+                        .form__group.right
+                            button.btn.btn--small.btn--green Save settings
+                
+                .line &nbsp;
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Password change
+                    form.form.form-user-password
+                        .form__group
+                            label(for='password-current').form__label Current password
+                            input(type='password', placeholder='••••••••', required, minlength='8')#password-current.form__input
+                        .form__group
+                            label(for='password').form__label New password
+                            input(type='password', placeholder='••••••••', required, minlength='8')#password.form__input
+                        .form__group.ma-bt-lg
+                            label(for='password-confirm').form__label Confirm password
+                            input(type='password', placeholder='••••••••', required, minlength='8')#password-confirm.form__input
+                        .form__group.right
+                            button.btn.btn--small.btn--green.btn--save-password Save password

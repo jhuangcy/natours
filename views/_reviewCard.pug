@@ -1,0 +1,13 @@
+mixin reviewCard(review)
+    .reviews__card 
+        .reviews__avatar 
+            img(src=`/img/users/${review.user.photo}`, alt=`${review.user.name}`).reviews__avatar-img
+            h6.reviews__user= review.user.name
+        p.reviews__text= review.review
+        .reviews__rating 
+
+            //- 5 stars max. Loop through each star and compare with rating, those lower will be highlighted, those higher will not be
+            //- Change class name into attribute of svg
+            each star in [1,2,3,4,5]
+                svg(class=`reviews__star--${review.rating >= star ? 'active' : 'inactive'}`).reviews__star
+                    use(xlink:href="/img/icons.svg#icon-star")
