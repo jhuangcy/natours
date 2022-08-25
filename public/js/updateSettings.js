@@ -5,7 +5,7 @@ import { showAlert } from './alerts'
 // export const updateData = async (name, email) =>
 export const updateSettings = async (data, type) =>
 {
-    const url = type ==='password' ? 'http://localhost:3000/api/v1/users/updatemypassword' : 'http://localhost:3000/api/v1/users/updateme'
+    const url = type ==='password' ? '/api/v1/users/updatemypassword' : '/api/v1/users/updateme'
 
     try 
     {

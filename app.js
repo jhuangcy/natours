@@ -10,6 +10,7 @@ const mongoSanitize = require('express-mongo-sanitize')     // Mongo sanitizatio
 const xss = require('xss-clean')    // XSS sanitization
 const hpp = require('hpp')  // Prevent parameter polution, will remove duplicate query parameter names
 const cookieParser = require('cookie-parser')   // Read cookies from clients
+const compression = require('compression')  // Compress http responses
 
 // PROJ
 const tourRouter = require('./routes/tourRoutes')
@@ -77,6 +78,8 @@ const limiter = rateLimit({
     message: 'Too many requests from this IP, please try again in an hour' 
 }) 
 app.use('/api', limiter)    // Only apply to api routes
+
+app.use(compression())
 
 // Test middleware
 app.use((req, res, next) =>

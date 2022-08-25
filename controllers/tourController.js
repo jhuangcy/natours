@@ -251,7 +251,7 @@ exports.getToursWithin = catchAsync(async (req, res, next) =>
     
     // The unit of the radius needs to be converted to radians (divide distance by the radius of the earth)
     const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1
-    console.log(radius)
+    // console.log(radius)
 
     if (!lat || !lng) next(new AppError('Please provide lat/lng in the format lat,lng', 400))
 

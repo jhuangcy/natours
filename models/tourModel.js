@@ -198,11 +198,11 @@ tourSchema.pre(/^find/, function(next)
 // })
 
 // After query exec
-tourSchema.post(/^find/, function(docs, next)
-{
-    console.log(`query took ${Date.now() - this.start}ms`)
-    next()
-})
+// tourSchema.post(/^find/, function(docs, next)
+// {
+//     console.log(`query took ${Date.now() - this.start}ms`)
+//     next()
+// })
 
 // Create model from schema
 const Tour = mongoose.model('Tour', tourSchema)

@@ -7,12 +7,13 @@ export const login = async (email, password) =>
     // console.log(email, password)
     try 
     {
+        // Don't need to specify full url because client/server are on the same base url
         const res = await axios({
             method: 'post',
-            url: 'http://localhost:3000/api/v1/users/login',
+            url: '/api/v1/users/login',
             data: {email, password}
         })
-        console.log(res)
+        // console.log(res)
 
         // Redirect on successful login
         if (res.data.status === 'success') 
@@ -50,7 +51,7 @@ export const logout = async () =>
     {
         const res = await axios({
             method: 'get',
-            url: 'http://localhost:3000/api/v1/users/logout'
+            url: '/api/v1/users/logout'
         })
         
         if (res.data.status === 'success') 
