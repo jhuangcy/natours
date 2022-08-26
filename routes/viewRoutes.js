@@ -25,7 +25,7 @@ const router = express.Router()
 //         title: 'All Tours'
 //     })
 // })
-router.get('/', bookingController.createBookingCheckout, authController.isLoggedIn, viewsController.getOverview)
+router.get('/', /*bookingController.createBookingCheckout,*/ authController.isLoggedIn, viewsController.getOverview)
 
 // router.get('/tour', (req, res) =>
 // {

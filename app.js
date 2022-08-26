@@ -21,6 +21,7 @@ const bookingRouter = require('./routes/bookingRoutes')
 const viewRouter = require('./routes/viewRoutes')
 const AppError = require('./utils/appError')
 const globalErrorHandler = require('./controllers/errorController')
+const bookingController = require('./controllers/bookingController')
 
 
 // Start express app
@@ -72,6 +73,10 @@ app.use(helmet.contentSecurityPolicy({
     }
 }))
 
+// Stripe webhook route
+// Route needs to be here because res.body must be parsed to 'raw', not json
+app.post('/webhook-checkout', express.raw({type: 'application/json'}), bookingController.webhookCheckout)
+
 app.use(express.json({limit: '10kb'}))  // Limit req.body to 10kb
 app.use(express.urlencoded({extended: true, limit: '10kb'}))    // For forms
 app.use(cookieParser())
@@ -102,6 +107,7 @@ app.use((req, res, next) =>
     // console.log(req.cookies)
     next()
 })
+
 
 // TEMPLATE ROUTES
 // app.get('/', (req, res) => 
