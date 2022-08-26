@@ -11,6 +11,7 @@ const xss = require('xss-clean')    // XSS sanitization
 const hpp = require('hpp')  // Prevent parameter polution, will remove duplicate query parameter names
 const cookieParser = require('cookie-parser')   // Read cookies from clients
 const compression = require('compression')  // Compress http responses
+const cors = require('cors')
 
 // PROJ
 const tourRouter = require('./routes/tourRoutes')
@@ -38,6 +39,16 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 // MIDDLEWARE
+app.use(cors())
+
+// Only allow specific sites to access api
+// app.use(cors({
+//     origin: 'https://www.natours.com'
+// }))
+
+// Browsers will send OPTIONS request for PUT/PATCH/DELETE
+app.options('*', cors())
+// app.options('/api/v1/tours/:id', cors())    // Only on specific route
 
 // Helmet config to use leaflet and axios cdn links
 // Or downgrade helmet: npm i helmet@3.23.3
@@ -103,7 +114,7 @@ app.use((req, res, next) =>
 app.use('/', viewRouter)
 
 // API ROUTES
-app.use('/api/v1/tours', tourRouter)
+app.use('/api/v1/tours', /*cors(),*/ tourRouter)    // Adding cors to specific route
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
 app.use('/api/v1/bookings', bookingRouter)
