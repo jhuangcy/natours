@@ -6,9 +6,11 @@ const authController = require('../controllers/authController')
 const router = express.Router()
 
 router.use(authController.protect)
-router.use(authController.restrictTo('lead-guide', 'admin'))
 
 router.get('/checkout-session/:tourId', bookingController.getCheckoutSession)
+
+// Only leads and admins can manage bookings
+router.use(authController.restrictTo('lead-guide', 'admin'))
 
 router
     .route('/')
