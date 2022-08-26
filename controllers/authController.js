@@ -28,7 +28,7 @@ const createSendToken = (user, statusCode, req, res) =>
 
     // This is the better way
     // req.headers('x-forwarded-proto') === 'https' is heroku specific
-    if (req.secure || req.headers('x-forwarded-proto') === 'https') cookieOptions.secure = true
+    if (req.secure || req.get('x-forwarded-proto') === 'https') cookieOptions.secure = true
 
     user.password = undefined   // Hide the password field on create user
 

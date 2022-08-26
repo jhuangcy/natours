@@ -27,7 +27,7 @@ const bookingController = require('./controllers/bookingController')
 // Start express app
 const app = express()
 
-// For heroku, allows this check: req.headers('x-forwarded-proto') === 'https'
+// For heroku, allows this check in authController: req.headers('x-forwarded-proto') === 'https'
 app.enable('trust proxy')   
 
 // Define template engine
