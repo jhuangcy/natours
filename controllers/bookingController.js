@@ -24,14 +24,24 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) =>
         cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,   // Redirect to tour
         customer_email: req.user.email,
         client_reference_id: req.params.tourId,
+        mode: 'payment',
         line_items: [{
-            name: `${tour.name} Tour`,
-            description: tour.summary,
+            // name: `${tour.name} Tour`,
+            // description: tour.summary,
             // images: [`https://www.natours.dev/img/tours/${tour.imageCover}`],   // Must be live images
-            images: [`${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`],   // Must be live images
-            amount: tour.price * 100,   // In cents, so need to convert
-            currency: 'usd',
-            quantity: 1
+            // images: [`${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`],   // Must be live images
+            // amount: tour.price * 100,   // In cents, so need to convert
+            // currency: 'usd',
+            quantity: 1,
+            price_data: {
+                currency: 'usd',
+                unit_amount: tour.price * 100,
+                product_data: {
+                    name: `${tour.name} Tour`,
+                    description: tour.summary,
+                    images: [`${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`],
+                }
+            }
         }]
     })
 
@@ -61,7 +71,8 @@ const createBookingCheckout = async session =>
 {
     const tour = session.client_reference_id
     const user = (await User.findOne({email: session.customer_email})).id
-    const price = session.display_items[0].amount / 100
+    // const price = session.display_items[0].amount / 100
+    const price = session.amount_total / 100
 
     await Booking.create({tour, user, price})
 }
