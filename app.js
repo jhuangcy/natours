@@ -25,6 +25,9 @@ const globalErrorHandler = require('./controllers/errorController')
 // Start express app
 const app = express()
 
+// For heroku, allows this check: req.headers('x-forwarded-proto') === 'https'
+app.enable('trust proxy')   
+
 // Define template engine
 app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))

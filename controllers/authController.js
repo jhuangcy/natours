@@ -14,7 +14,7 @@ const signToken = id =>
     return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
 }
 
-const createSendToken = (user, statusCode, res) =>
+const createSendToken = (user, statusCode, req, res) =>
 {
     const token = signToken(user._id)
 
@@ -24,7 +24,11 @@ const createSendToken = (user, statusCode, res) =>
         httpOnly: true  // Browser cannot modify cookie
     }
 
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true
+    // if (process.env.NODE_ENV === 'production') cookieOptions.secure = true
+
+    // This is the better way
+    // req.headers('x-forwarded-proto') === 'https' is heroku specific
+    if (req.secure || req.headers('x-forwarded-proto') === 'https') cookieOptions.secure = true
 
     user.password = undefined   // Hide the password field on create user
 
@@ -56,7 +60,7 @@ exports.signup = catchAsync(async (req, res, next) =>
     //     token,
     //     data: {user: newUser}
     // })
-    createSendToken(newUser, 201, res)
+    createSendToken(newUser, 201, req, res)
 })
 
 exports.login = catchAsync(async (req, res, next) => 
@@ -79,7 +83,7 @@ exports.login = catchAsync(async (req, res, next) =>
     //     status: 'success',
     //     token
     // })
-    createSendToken(user, 200, res)
+    createSendToken(user, 200, req, res)
 })
 
 // Since cookie is used, server will handle logging out
@@ -230,7 +234,7 @@ exports.resetPassword = catchAsync(async (req, res, next) =>
     //     status: 'success',
     //     token
     // })
-    createSendToken(user, 200, res)
+    createSendToken(user, 200, req, res)
 })
 
 exports.updatePassword = catchAsync(async (req, res, next) => 
@@ -253,5 +257,5 @@ exports.updatePassword = catchAsync(async (req, res, next) =>
     //     status: 'success',
     //     token
     // })
-    createSendToken(user, 200, res)
+    createSendToken(user, 200, req, res)
 })

@@ -29,3 +29,13 @@ process.on('unhandledRejection', err =>
     console.log(err.name, err.message)
     server.close(() => process.exit(1))
 })
+
+// Heroku SIGTERM signal: heroku will send a signal to our server to restart every day. The shutdown is abrupt and may leave hanging requests.
+process.on('SIGTERM', () =>
+{
+    console.log('SIGTERM received. Shutting down gracefully.')
+    server.close(() => 
+    {
+        console.log('Process terminated')
+    })
+})
