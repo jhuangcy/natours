@@ -20,7 +20,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) =>
         // During development, we will put booking data as query string
         // This is not secure because anyone can access this route directly without going through Stripe
         // success_url: `${req.protocol}://${req.get('host')}/?tour=${req.params.tourId}&user=${req.user.id}&price=${tour.price}`,   // Redirect to home
-        success_url: `${req.protocol}://${req.get('host')}/my-tours`,   // Redirect to my bookings
+
+        // This query param is for showing alerts to the client from the server (it will be picked up by a view route middleware)
+        success_url: `${req.protocol}://${req.get('host')}/my-tours?alert=booking`,   // Redirect to my bookings
         cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,   // Redirect to tour
         customer_email: req.user.email,
         client_reference_id: req.params.tourId,

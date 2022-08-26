@@ -3,6 +3,7 @@ import { login, logout } from './login'
 import { displayMap } from './mapbox'
 import { updateSettings } from './updateSettings'
 import { bookTour } from './stripe'
+import { showAlert } from './alerts'
 
 // See if map element exists first (to remove console errors on other pages)
 const mapbox = document.getElementById('map')
@@ -85,3 +86,7 @@ if (bookBtn)
         bookTour(tourId)
     })
 }
+
+// For showing alert when checkout booking completes
+const alertMessage = document.querySelector('body').dataset.alert
+if (alert) showAlert('success', alertMessage)

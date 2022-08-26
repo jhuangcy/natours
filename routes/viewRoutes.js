@@ -6,6 +6,9 @@ const bookingController = require('../controllers/bookingController')
 
 const router = express.Router()
 
+// Will pickup any alerts sent from the server
+router.use(viewsController.alerts)
+
 // This is so we can check user login status on pages and display custom content
 // router.use(authController.isLoggedIn)
 

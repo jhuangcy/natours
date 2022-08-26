@@ -80,3 +80,12 @@ exports.getMyTours = catchAsync(async (req, res, next) =>
         tours
     })
 })
+
+// For picking up alerts from the server in the query params
+exports.alerts = (req, res, next) =>
+{
+    const {alert} = req.query
+    if (alert === 'booking') res.locals.alert = 'Your booking was successful'
+
+    next()
+}

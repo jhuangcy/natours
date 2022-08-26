@@ -19,7 +19,8 @@ html
             script(src="/js/bundle.js" defer)       
             title Natours | #{title}
 
-    body 
+    //- If there was an alert set by the server after checkout booking complete
+    body(data-alert=`${alert ? alert : ''}`) 
         include _header
 
         //- Content in here will be overwritten by overview.pug
